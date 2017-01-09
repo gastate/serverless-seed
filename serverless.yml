@@ -1,14 +1,8 @@
-service: petshop${file(versioning.jenkins.js):version} #the ${} is used by jenkins to up version in pr
+service: serverlessSeed${file(versioning.jenkins.js):version} #the ${} is used by jenkins to up version in pr
 
 provider:
   name: aws
   runtime: nodejs4.3
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - s3:*
-        - dynamodb:*
-      Resource: "*"
   environment:
     IS_SERVERLESS: ${file(deploy.env.yml):IS_SERVERLESS}
     LIFECYCLE: ${file(deploy.env.yml):LIFECYCLE}
@@ -30,84 +24,16 @@ package:
     - .env
 
 functions:
-  pets:
+  helloWorld:
     environment:
-      PETS_BUCKET: ${file(deploy.env.yml):PETS_BUCKET}
-      PETS_BUCKET_KEY: ${file(deploy.env.yml):PETS_BUCKET_KEY}
-    handler: build/src/functions/storageEx/handler.pets
+      MY_ENV_VARIABLE: ${file(deploy.env.yml):MY_ENV_VARIABLE}
+    handler: build/src/functions/helloWorld/handler.helloWorld
     events:
       - http:
-          path: pets
+          path: /
           method: GET
       - http:
-          path: pets
+          path: /
           method: POST
-  auth:
-    environment:
-      GLU_URL: ${file(deploy.env.yml):GLU_URL}
-    handler: build/src/functions/auth/handler.auth
-    events:
-      - http:
-          path: auth/heartbeat
-          method: GET
-      - http:
-          path: auth
-          method: POST
-  mockglu:
-    handler: build/src/functions/mockglu/handler.glu
-    events:
-      - http:
-          path: glu/heartbeat
-          method: GET
-      - http:
-          path: glu
-          method: POST
-  petCache:
-    handler: build/src/functions/dynamoDBCacheEx/handler.petCache
-    events:
-      - http:
-          path: petCache
-          method: GET
-      - http:
-          path: petCache
-          method: POST
-
-  petImages:
-    handler: build/src/functions/imageSignEx/handler.petImages
-    events:
-      - http:
-          path: petImages
-          method: GET
-
-resources:
-  Resources:
-    PetCacheDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
-      Properties:
-        AttributeDefinitions:
-          -
-            AttributeName: id
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: pets-${opt:stage}
-
-
-custom:
-  dynamodb:
-    start:
-      port: 8000
-      inMemory: true
-      migration: true
-    migration:
-      dir: ./offline/migrations
-
 plugins:
-  - serverless-dynamodb-local
   - serverless-offline

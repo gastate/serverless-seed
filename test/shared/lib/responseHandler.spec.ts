@@ -18,13 +18,11 @@ describe("ResponseHandler", () => {
         };
 
         it("should return a clean response when passed an error", () => {
-            let resp = new ResponseHandler();
-            resp.done(new Error("An error occurred"), null, callbackError);
+            ResponseHandler.done(new Error("An error occurred"), null, callbackError);
         });
 
         it("should return success when passed a response", () => {
-            let resp = new ResponseHandler();
-            resp.done(null, { "message": "something happened" }, callbackSuccess);
+            ResponseHandler.done(null, { "message": "something happened" }, callbackSuccess);
         });
 
     });
