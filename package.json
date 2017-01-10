@@ -13,7 +13,7 @@
     "deploy": "sls deploy",
     "build": "npm run clean && tsc",
     "precover": "npm run clean && tsc",
-    "cover": "istanbul cover --include-all-sources -x '*.jenkins.js' -x 'test/**' node_modules/mocha/bin/_mocha -- -- -u exports -R json --require build/test/index.js build/test/**/*.js",
+    "cover": "istanbul cover --include-all-sources -x '*.jenkins.js' -x 'test/**' node_modules/mocha/bin/_mocha -- --recursive --require build/test/index.js build/test",
     "postcover": "node_modules/.bin/remap-istanbul -i coverage/coverage.json -o coverage/html -t html",
     "pretest": "npm run clean && tsc",
     "test": "mocha --recursive --require build/test/index.js build/test",
@@ -22,7 +22,7 @@
     "prejenkins": "npm run clean && tsc",
     "jenkins": "mocha --recursive --require build/test/index.js --reporter mocha-junit-reporter --reporter-options mochaFile=./testreports/tests-results-jenkins.xml build/test",
     "presonar": "npm run jenkins",
-    "sonar": "istanbul cover --include-all-sources -x '*.jenkins.js' -x 'test/**' node_modules/mocha/bin/_mocha -- -- -u exports -R spec --require build/test/index.js build/test/**/*.js",
+    "sonar": "istanbul cover --include-all-sources -x '*.jenkins.js' -x 'test/**' node_modules/mocha/bin/_mocha -- --recursive --require build/test/index.js build/test",
     "postsonar": "node_modules/.bin/remap-istanbul -i coverage/coverage.json -o coverage/lcov-map.info -t lcovonly"
   },
   "config": {
