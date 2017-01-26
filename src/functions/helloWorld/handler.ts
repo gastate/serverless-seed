@@ -13,7 +13,7 @@ import { NodeCallback } from "src/shared/lib/nodeCallback";
 let config = new BaseConfig();
 
 export function helloWorld(event: any, context: any, callback: NodeCallback) {
-    if (event && event.headers && event.headers["X-Gsu-Heartbeat"]) {
+    if (event && event.headers && event.headers["Authorization"] && event.headers["Authorization"] === "Heartbeat") {
         return ResponseHandler.done(null, { "alive": true }, callback);
     }
 
