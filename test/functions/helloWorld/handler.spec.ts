@@ -26,5 +26,41 @@ describe("helloWorld", () => {
 
             helloWorld({ "httpMethod": "POST" }, null, cb);
         });
+
+        it("should say 'Unsupported method' when DELETE is called", (done) => {
+            let cb = (err: any, res: any) => {
+                expect(err).to.equal(null);
+                expect(typeof res).to.equal("object");
+                expect(res.statusCode).to.equal("400");
+                expect(JSON.stringify(res)).to.contain("Unsupported method");
+                done();
+            };
+
+            helloWorld({ "httpMethod": "DELETE" }, null, cb);
+        });
+
+        it("should say 'alive' when Heartbeat is called", (done) => {
+            let cb = (err: any, res: any) => {
+                expect(err).to.equal(null);
+                expect(typeof res).to.equal("object");
+                expect(res.statusCode).to.equal("200");
+                expect(JSON.stringify(res)).to.contain("alive");
+                done();
+            };
+
+            helloWorld({ "httpMethod": "GET", "headers": {"Authorization": "Heartbeat" } }, null, cb);
+        });
+
+        it("should say 'isServerless' when Info is called", (done) => {
+            let cb = (err: any, res: any) => {
+                expect(err).to.equal(null);
+                expect(typeof res).to.equal("object");
+                expect(res.statusCode).to.equal("200");
+                expect(JSON.stringify(res)).to.contain("isServerless");
+                done();
+            };
+
+            helloWorld({ "httpMethod": "GET", "headers": {"X-Gsu-Info": "true" } }, null, cb);
+        });
     });
 });

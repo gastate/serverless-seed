@@ -12,6 +12,10 @@ export class BaseConfig {
         return process.env.LIFECYCLE;
     }
 
+    public get vpcPingTarget(): string {
+        return process.env.VPC_PING_TARGET;
+    }
+
     get info(): { [key: string]: string } {
         let info: { [key: string]: string } = {};
         let self = this;

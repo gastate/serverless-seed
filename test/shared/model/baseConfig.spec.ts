@@ -28,6 +28,10 @@ describe("BaseConfig", () => {
         it("should retrieve URL from ENV", () => {
             assert.equal(config.lifecycle, process.env.LIFECYCLE);
         });
+
+        it("should retrieve PING_TARGET from ENV", () => {
+            assert.equal(config.vpcPingTarget, process.env.VPC_PING_TARGET);
+        });
     });
 
     describe("#info", () => {

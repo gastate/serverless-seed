@@ -3,9 +3,21 @@ service: serverlessSeed${file(versioning.jenkins.js):version} #the ${} is used b
 provider:
   name: aws
   runtime: nodejs4.3
+  # role: ${file(deploy.env.yml):IAM_ROLE}  # Use this to specify a pre-defined deployment role
   environment:
     IS_SERVERLESS: ${file(deploy.env.yml):IS_SERVERLESS}
     LIFECYCLE: ${file(deploy.env.yml):LIFECYCLE}
+  memorySize: 512 # optional, default is 1024.  Tune this down as needed, lower memory is cheaper
+  timeout: 15 # default is 6, may need longer from Banner Queries
+  stage: dev
+#  vpc: # This configuratino allows Lambda to talk to GSU, and is configured by account.  It can also be specified at the Function level
+#    securityGroupIds:
+#      - ${file(deploy.env.yml):VPC_SECURITY_GROUP}
+#    subnetIds:
+#      - ${file(deploy.env.yml):VPC_AZ_1}
+#      - ${file(deploy.env.yml):VPC_AZ_2}
+#      - ${file(deploy.env.yml):VPC_AZ_3}
+#      - ${file(deploy.env.yml):VPC_AZ_4}
 
 package:
   exclude:

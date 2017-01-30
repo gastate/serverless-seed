@@ -8,18 +8,18 @@ let dotenv = require("dotenv").config({ silent: true });
 
 import { BaseConfig } from "src/shared/model/baseConfig";
 import { ResponseHandler } from "src/shared/lib/responseHandler";
+import { HeartbeatHandler } from "src/shared/lib/heartbeatHandler";
 import { NodeCallback } from "src/shared/lib/nodeCallback";
 
 let config = new BaseConfig();
 
 export function helloWorld(event: any, context: any, callback: NodeCallback) {
-    if (event && event.headers && event.headers["Authorization"] && event.headers["Authorization"] === "Heartbeat") {
-        return ResponseHandler.done(null, { "alive": true }, callback);
-    }
+  if (event && event.headers && event.headers["Authorization"] && event.headers["Authorization"] === "Heartbeat")
+    return HeartbeatHandler.alive(callback);
 
-    if (event && event.headers && event.headers["X-Gsu-Info"]) {
+    if (event && event.headers && event.headers["X-Gsu-Info"])
         return ResponseHandler.done(null, config.info, callback);
-    }
+
 
     handle(event, context, callback);
 }
