@@ -35,5 +35,18 @@ functions:
       - http:
           path: /
           method: POST
+  helloUni:
+    environment:
+      MY_ENV_VARIABLE: ${file(deploy.env.yml):MY_ENV_VARIABLE}
+    handler: build/src/functions/helloUniverse/handler.helloUni
+    events:
+      - http:
+          path: /uni
+          method: GET
+          cors: true
+      - http:
+          path: /uni
+          method: POST
+          cors: true
 plugins:
   - serverless-offline
