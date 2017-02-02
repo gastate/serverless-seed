@@ -1,4 +1,4 @@
-service: serverlessSeed${file(versioning.jenkins.js):version} #the ${} is used by jenkins to up version in pr
+service: docUploadOrds${file(versioning.jenkins.js):version} #the ${} is used by jenkins to up version in pr
 
 provider:
   name: aws
@@ -46,6 +46,19 @@ functions:
           cors: true
       - http:
           path: /uni
+          method: POST
+          cors: true
+  docOrds:
+    environment:
+      MY_ENV_VARIABLE: ${file(deploy.env.yml):MY_ENV_VARIABLE}
+    handler: build/src/functions/docOrds/handler.retrieveBannerData
+    events:
+      - http:
+          path: /semesters
+          method: GET
+          cors: true
+      - http:
+          path: /semesters
           method: POST
           cors: true
 plugins:

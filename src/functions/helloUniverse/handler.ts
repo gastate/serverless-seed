@@ -34,6 +34,7 @@ let handle = (event: any, context: any, callback: NodeCallback) => {
                 }, callback);
             break;
         case "POST":
+            console.log("MyEvent: " + JSON.stringify(event));
             ResponseHandler.done(null,
                 {
                     "msg": "POST Universe worked!"

@@ -1,7 +1,5 @@
-import { NodeCallback } from "src/shared/lib/nodeCallback";
-
 export class ResponseHandler {
-    static done(err: any, res: any, callback: NodeCallback) {
+    static done(err: any, res: any, callback: Function) {
         callback(null, {
             statusCode: err ? "400" : "200",
             body: err ? JSON.stringify({ error: err.message }) : JSON.stringify(res),
@@ -11,4 +9,16 @@ export class ResponseHandler {
             }
         });
     }
+
+    static unauthorized(statusCode: string, err: any, callback: Function) {
+        callback(null, {
+            statusCode: statusCode,
+            body: JSON.stringify({ error: err.message }),
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
+        });
+    }
 }
+
